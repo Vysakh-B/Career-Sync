@@ -1,0 +1,358 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>JobBoard &mdash; Website Template by Colorlib</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    
+    <link rel="stylesheet" href={% static "css/custom-bs.css" %}>
+    <link rel="stylesheet" href={% static "css/jquery.fancybox.min.css" %}>
+    <link rel="stylesheet" href={% static "css/bootstrap-select.min.css" %}>
+    <link rel="stylesheet" href={% static "fonts/icomoon/style.css" %}>
+    <link rel="stylesheet" href={% static "fonts/line-icons/style.css" %}>
+    <link rel="stylesheet" href={% static "css/owl.carousel.min.css" %}>
+    <link rel="stylesheet" href={% static "css/animate.min.css" %}>
+    <link rel="stylesheet" href={% static "css/quill.snow.css" %}>
+    
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href={% static "css/style.css" %}>    
+  </head>
+  <body id="top">
+
+  <div id="overlayer"></div>
+  <div class="loader">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+    
+
+<div class="site-wrap">
+
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div> <!-- .site-mobile-menu -->
+    
+
+    <!-- NAVBAR -->
+    {% include "navbar.html" %}
+
+
+    <!-- HOME -->
+    <section class="section-hero overlay inner-page bg-image" style="background-image: url('images/hero_1.jpg');" id="home-section">
+      
+    </section>
+
+    <section class="site-section">
+      
+      <div class="container">
+        
+      <div class="alert alert-danger" style="text-align:center;">
+        <p>updating fields refresh the data already inserted</p>
+    </div>
+      
+        <div class="row" style="justify-content:center;">
+          <div class="col-lg-6 mb-5">
+            <h2 class="mb-4">Update your data</h2>
+            <form action="" class="p-4 border rounded" id="jobForm" method="POST" onsubmit="updateHiddenInput()">
+                {% csrf_token %}
+                
+              
+                <!-- Experienced Checkbox -->
+                <div class="row form-group">
+                  <div class="col-md-12">
+                    <input type="checkbox" id="experienced" onclick="toggleSalaryField()" name="experience">
+                    <label for="experienced" class="text-black">Experienced</label>
+                  </div>
+                </div>
+               <!-- year Input (Hidden Initially) -->
+               <div class="row form-group" id="salaryField" style="display: none;">
+                <div class="col-md-12 mb-3 mb-md-0">
+                  <label class="text-black" for="salary">Years</label>
+                  <input type="number" id="salary" class="form-control" placeholder="Enter your experience in Years" name="year">
+                </div>
+              </div>
+                <!-- Salary Input (Hidden Initially) -->
+                <div class="row form-group" id="salaryField" style="display: none;">
+                  <div class="col-md-12 mb-3 mb-md-0">
+                    <label class="text-black" for="salary">Current Salary</label>
+                    <input type="text" id="salary" class="form-control" placeholder="Enter your salary" name="salary">
+                  </div>
+                </div>
+              
+                <!-- Interested Job Fields (Dynamic) -->
+                <div class="row form-group">
+                  <div class="col-md-12">
+                    <label class="text-black">Interested Job Fields</label>
+                    <div id="jobInterestFields"></div>
+                    <select id="jobFieldSelect" class="form-control mb-2" name="job_fields">
+                      <option value="" disabled selected>Select a job field</option>
+                      <option value="Software Engineer">Software Engineer</option>
+                      <option value="Data Scientist">Data Scientist</option>
+                      <option value="UI/UX Designer">UI/UX Designer</option>
+                      <option value="Cyber Security">Cyber Security</option>
+                      <option value="Product Manager">Product Manager</option>
+                    </select>
+                  <input type="hidden" id="jobFieldsInput" name="job_fields">
+
+                    <button type="button" class="btn btn-sm btn-secondary mt-2" onclick="addJobField()">+ Add More</button>
+                  </div>
+                </div>
+              
+                <!-- Free Time Inputs (Dynamic with Time Picker) -->
+                <div class="row form-group">
+                  <div class="col-md-12">
+                      <label class="text-black">Free Time for Interview Tips</label>
+                      <div id="freeTimeFields">
+                          <div class="d-flex time-field">
+                              <select class="form-control mb-2 w-50 hour">
+                                  <option value="12">12</option>
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
+                                  <option value="6">6</option>
+                                  <option value="7">7</option>
+                                  <option value="8">8</option>
+                                  <option value="9">9</option>
+                                  <option value="10">10</option>
+                                  <option value="11">11</option>
+                              </select>
+                              <span class="mx-2">:</span>
+                              <select class="form-control mb-2 w-25 minute">
+                                  <option value="00">00</option>
+                                  <option value="15">15</option>
+                                  <option value="30">30</option>
+                                  <option value="45">45</option>
+                              </select>
+                              <select class="form-control mb-2 w-25 ampm">
+                                  <option value="AM">AM</option>
+                                  <option value="PM">PM</option>
+                              </select>
+                          </div>
+                      </div>
+                      <input type="hidden" id="freeTimeInput" name="freetime">
+                      <button type="button" class="btn btn-sm btn-secondary mt-2" onclick="addDropdownField()">+ Add More</button>
+                  </div>
+              </div>
+              
+                  <script>
+                    function addDropdownField() {
+                      var container = document.getElementById("freeTimeFields");
+                  
+                      var newField = document.createElement("div");
+                      newField.className = "d-flex time-field mt-2";
+                      newField.innerHTML = `
+                          <select class="form-control mb-2 w-50 hour">
+                              <option value="12">12</option>
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                              <option value="6">6</option>
+                              <option value="7">7</option>
+                              <option value="8">8</option>
+                              <option value="9">9</option>
+                              <option value="10">10</option>
+                              <option value="11">11</option>
+                          </select>
+                          <span class="mx-2">:</span>
+                          <select class="form-control mb-2 w-25 minute">
+                              <option value="00">00</option>
+                              <option value="15">15</option>
+                              <option value="30">30</option>
+                              <option value="45">45</option>
+                          </select>
+                          <select class="form-control mb-2 w-25 ampm">
+                              <option value="AM">AM</option>
+                              <option value="PM">PM</option>
+                          </select>
+                      `;
+                      
+                      container.appendChild(newField);
+                  }
+                  
+                  // Function to collect all selected times before form submission
+                  function collectTimeFields() {
+                      var times = [];
+                      var timeFields = document.querySelectorAll(".time-field");
+                  
+                      timeFields.forEach(field => {
+                          var hour = field.querySelector(".hour").value;
+                          var minute = field.querySelector(".minute").value;
+                          var ampm = field.querySelector(".ampm").value;
+                  
+                          times.push({ hour: hour, minute: minute, period: ampm });
+                      });
+                  
+                      document.getElementById("freeTimeInput").value = JSON.stringify(times);
+                  }
+                  
+                  // Attach this function to form submission event
+                  document.querySelector("form").addEventListener("submit", collectTimeFields);
+                  
+                  </script>
+                  
+                <div class="row form-group">
+                  <div class="col-md-12">
+                    <input type="submit" value="Sign Up" class="btn px-4 btn-primary text-white">
+                  </div>
+                </div>
+              
+              </form>
+              
+              <!-- JavaScript for Dynamic Fields -->
+              <script>
+                document.querySelector("form").addEventListener("submit", function() {
+                  var select = document.getElementById("jobFieldSelect");
+                  if (select.value) {
+                      addJobField(); // Force adding the last selected item
+                  }
+              });
+                function toggleSalaryField() {
+                  var checkBox = document.getElementById("experienced");
+                  var salaryField = document.getElementById("salaryField");
+                  salaryField.style.display = checkBox.checked ? "block" : "none";
+                }
+              
+                function addJobField() {
+                  var select = document.getElementById("jobFieldSelect");
+                  var selectedValue = select.value;
+              
+                  if (!selectedValue) return; // Exit if no selection
+              
+                  var selectedText = select.options[select.selectedIndex].text;
+                  var hiddenInput = document.getElementById("jobFieldsInput");
+                  var currentValue = hiddenInput.value.trim();
+              
+                  // Append new value to existing string, ensuring no duplicate commas
+                  hiddenInput.value = currentValue ? currentValue + "," + selectedText : selectedText;
+              
+                  // Create a new div for UI display
+                  var jobFieldDiv = document.createElement("div");
+                  jobFieldDiv.className = "job-field-item d-flex align-items-center mb-2";
+                  jobFieldDiv.innerHTML = `
+                      <input type="text" class="form-control" value="${selectedText}" readonly>
+                      <button type="button" class="btn btn-danger btn-sm ml-2" onclick="removeJobField(this, '${selectedText}')">X</button>
+                  `;
+              
+                  document.getElementById("jobInterestFields").appendChild(jobFieldDiv);
+              
+                  // Remove the selected option from dropdown
+                  select.querySelector(`option[value="${selectedValue}"]`).remove();
+                  select.value = ""; // Reset dropdown selection
+
+                  
+              }
+              
+              // Function to remove a job field and update hidden input
+              function removeJobField(button, jobText) {
+                  var jobFieldDiv = button.parentElement;
+                  jobFieldDiv.remove(); // Remove the div from UI
+              
+                  var hiddenInput = document.getElementById("jobFieldsInput");
+                  var jobFields = hiddenInput.value.split(",").map(item => item.trim());
+              
+                  // Remove the selected job from the array
+                  jobFields = jobFields.filter(job => job !== jobText);
+              
+                  // Update the hidden input value
+                  hiddenInput.value = jobFields.join(",");
+              
+                  // Add the removed job back to the dropdown
+                  var select = document.getElementById("jobFieldSelect");
+                  var newOption = document.createElement("option");
+                  newOption.value = jobText;
+                  newOption.text = jobText;
+                  select.appendChild(newOption);
+              }
+              
+              
+                function addTimeField() {
+                  var timeInput = document.getElementById("timeFieldInput");
+                  var selectedTime = timeInput.value;
+              
+                  if (selectedTime) {
+                      var hiddenInput = document.getElementById("timeFieldsInput");
+                      var currentValue = hiddenInput.value;
+              
+                      // Append new value to existing string
+                      if (currentValue) {
+                          hiddenInput.value = currentValue + "," + selectedTime;
+                      } else {
+                          hiddenInput.value = selectedTime;
+                      }
+              
+                      // Create a new div for UI display
+                      var timeFieldDiv = document.createElement("div");
+                      timeFieldDiv.className = "time-field-item d-flex align-items-center mb-2";
+                      timeFieldDiv.innerHTML = `
+                          <input type="text" class="form-control" value="${selectedTime}" readonly>
+                          <button type="button" class="btn btn-danger btn-sm ml-2" onclick="removeTimeField(this, '${selectedTime}')">X</button>
+                      `;
+              
+                      document.getElementById("timeInterestFields").appendChild(timeFieldDiv);
+              
+                      // Reset input field
+                      timeInput.value = "";
+                  }
+              }
+              function updateHiddenInput() {
+                var hiddenInput = document.getElementById("job_fields");
+                var jobFields = [];
+            
+                document.querySelectorAll("#jobInterestFields input").forEach(input => {
+                    jobFields.push(input.value);
+                });
+            
+                hiddenInput.value = jobFields.join(",");
+
+                
+            }
+            
+              
+              </script>
+              
+</div>
+          
+        </div>
+      </div>
+    </section>
+    
+    {% include "footer.html" %}
+
+  
+  </div>
+
+    <!-- SCRIPTS -->
+    <script src={% static "js/jquery.min.js" %}></script>
+    <script src={% static "js/bootstrap.bundle.min.js" %}></script>
+    <script src={% static "js/isotope.pkgd.min.js" %}></script>
+    <script src={% static "js/stickyfill.min.js" %}></script>
+    <script src={% static "js/jquery.fancybox.min.js" %}></script>
+    <script src={% static "js/jquery.easing.1.3.js" %}></script>
+    
+    <script src={% static "js/jquery.waypoints.min.js" %}></script>
+    <script src={% static "js/jquery.animateNumber.min.js" %}></script>
+    <script src={% static "js/owl.carousel.min.js" %}></script>
+    <script src={% static "js/quill.min.js" %}></script>
+    
+    
+    <script src={% static "js/bootstrap-select.min.js" %}></script>
+    
+    <script src={% static "js/custom.js" %}></script>
+   
+   
+     
+  </body>
+</html>
