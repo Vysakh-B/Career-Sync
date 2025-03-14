@@ -1,0 +1,104 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": ["Hi", "Hello", "Hey", "Good day", "Is anyone there?", "Howdy", "What's up?"],
+      "responses": [
+        "Hello! How can I assist you with your interview preparation?",
+        "Hi there! Ready to ace your interview?",
+        "Hey! What do you need help with today?",
+        "Welcome! Let's get started with your interview prep."
+      ]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": ["Bye", "See you later", "Goodbye", "Talk to you soon", "Catch you later"],
+      "responses": [
+        "Good luck with your interviews!",
+        "See you soon, keep practicing!",
+        "Bye! Don't forget to stay confident.",
+        "Take care and keep preparing!"
+      ]
+    },
+    {
+      "tag": "resume_tips",
+      "patterns": ["How to improve my resume?", "Any resume tips?", "What should I include in my CV?", "How to make my resume stand out?", "What are common resume mistakes?"],
+      "responses": [
+        "Make sure your resume is concise, highlights achievements, and is tailored to the job you're applying for.",
+        "Use action verbs, quantify your accomplishments, and keep it under two pages.",
+        "Customize your resume for each job, emphasizing relevant skills and experience.",
+        "Avoid grammatical errors, use a clean format, and make sure your contact details are updated."
+      ]
+    },
+    {
+      "tag": "technical_questions",
+      "patterns": ["What are common technical interview questions?", "Tell me some coding questions.", "Give me some DSA interview questions.", "What kind of coding problems are asked?", "How to prepare for coding interviews?"],
+      "responses": [
+        "Here are some common technical questions: 1. Reverse a linked list 2. Find the longest substring without repeating characters 3. Implement a binary search algorithm.",
+        "Practice data structures like arrays, linked lists, trees, and graphs. Focus on sorting, searching, and dynamic programming problems.",
+        "Some common DSA questions: 1. Two Sum problem 2. Merge two sorted linked lists 3. Find the middle of a linked list.",
+        "Prepare for system design, object-oriented programming, and database-related questions as well."
+      ]
+    },
+    {
+      "tag": "behavioral_questions",
+      "patterns": ["What are common HR questions?", "Tell me some behavioral interview questions.", "How to answer HR questions?", "What are some tricky HR questions?", "What is STAR method?"],
+      "responses": [
+        "Common HR questions: 1. Tell me about yourself. 2. Why do you want this job? 3. What are your strengths and weaknesses?",
+        "Use the STAR method to answer: Situation, Task, Action, Result. It helps structure your answers clearly.",
+        "Be honest, stay positive, and provide real examples from your experience.",
+        "Some tricky HR questions include: 'Why should we hire you?', 'Tell me about a time you failed.', and 'Where do you see yourself in 5 years?'."
+      ]
+    },
+    {
+      "tag": "interview_tips",
+      "patterns": ["How to prepare for an interview?", "Any interview tips?", "How do I crack my interview?", "How to stay confident in an interview?", "What are some last-minute interview tips?"],
+      "responses": [
+        "Research the company, practice common questions, and be confident. Mock interviews help a lot!",
+        "Understand the job role, be clear about your strengths, and prepare questions to ask the interviewer.",
+        "Be punctual, dress professionally, and always follow up with a thank-you email.",
+        "Stay calm, focus on your strengths, and remember that interviewers want you to succeed."
+      ]
+    },
+    {
+      "tag": "mock_interview",
+      "patterns": ["Can you conduct a mock interview?", "I want to practice an interview.", "Start a mock interview session.", "Can we do a role-play interview?"],
+      "responses": [
+        "Sure! Let's start a mock interview. First question: Tell me about yourself.",
+        "Let's do a mock interview. Question 1: Why do you want this job?",
+        "Great! Let's begin. Question 1: What are your biggest strengths and weaknesses?",
+        "Mock interviews help you gain confidence. Let's begin!"
+      ]
+    },
+    {
+      "tag": "salary_negotiation",
+      "patterns": ["How to negotiate salary?", "What should I say during salary negotiation?", "Any tips for salary discussion?", "How to ask for a higher salary?", "Should I negotiate my first salary?"],
+      "responses": [
+        "Research the industry salary range for your role and highlight your skills to justify your expected salary.",
+        "Be confident, state your value, and always be prepared to negotiate while remaining flexible.",
+        "Avoid mentioning salary expectations too early. Let the employer bring it up first.",
+        "For first-time job seekers, it's okay to negotiate but focus more on learning and growth opportunities."
+      ]
+    },
+    {
+      "tag": "company_specific",
+      "patterns": ["Do you have interview questions for Google?", "What are Amazon's interview rounds?", "How does Microsoft conduct interviews?", "What is the interview process at Facebook?", "What is Tesla's hiring process?"],
+      "responses": [
+        "Google's interview process includes coding challenges, system design, and behavioral rounds. Common questions include algorithms, data structures, and problem-solving.",
+        "Amazon follows the Leadership Principles in interviews. Expect behavioral questions along with DSA and system design rounds.",
+        "Microsoft interviews focus on technical skills, problem-solving, and leadership abilities. Expect multiple rounds including a final hiring manager interview.",
+        "Facebook (Meta) emphasizes system design, DSA, and behavioral questions based on their company culture."
+      ]
+    },
+    {
+      "tag": "follow_up",
+      "patterns": ["Should I follow up after an interview?", "How long should I wait to follow up?", "What should I say in a follow-up email?", "Is it okay to ask about my interview status?", "What if I don’t hear back after an interview?"],
+      "responses": [
+        "Yes, always send a thank-you email within 24 hours after your interview.",
+        "Follow up if you haven’t heard back within a week. Keep it professional and express continued interest.",
+        "Example follow-up email: 'Dear [Interviewer], Thank you for the opportunity. I’m excited about this role and looking forward to your feedback. Best regards, [Your Name]'.",
+        "If you don't hear back in 10-14 days, send a polite email asking for an update."
+      ]
+    }
+  ]
+}
