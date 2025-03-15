@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import JobApplication, Job
 from django.shortcuts import redirect
 from django.contrib import messages
+from chatbot.models import ChatSession
 
 # Create your views here.
 def jobs(request):
@@ -28,6 +29,7 @@ def mark_applied(request):
             # Check if the user already applied
         if not JobApplication.objects.filter(user=user_profile, jobid=job).exists():
             JobApplication.objects.create(user=user_profile, jobid=job)
+            ChatSession.objects.create(user=user_profile,company_name=job.company,position_name=job.title)
             messages.success(request, "Application status updated!")
 
         return redirect("jobs")  # Redirect after form submission
