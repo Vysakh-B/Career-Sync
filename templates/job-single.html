@@ -91,7 +91,7 @@
                 <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Save Job</a>
               </div>
               <div class="col-6">
-                <a href={{ data.url }} class="btn btn-block btn-primary btn-md" target="_blank" rel="noopener noreferrer">Apply Now</a>
+                <a href={{ data.url }} class="btn btn-block btn-primary btn-md" id="applyBtn" target="_blank" rel="noopener noreferrer"data-job-id="{{ data.id }}" >Apply Now</a>
               </div>
             </div>
           </div>
@@ -161,7 +161,7 @@
                   <a href="{{ data.url }}" 
                      class="btn btn-block btn-primary btn-md" 
                      id="applyBtn" 
-                     data-job-id="{{ data.id }}"  
+                     data-job-id="{{ data.id }}" 
                      target="_blank" 
                      rel="noopener noreferrer">
                       Apply Now
@@ -198,8 +198,9 @@
           </style>
           
           <script>
-          document.getElementById("applyBtn").addEventListener("click", function () {
+          document.getElementById("applyBtn").addEventListener("click", function (e) {
               let jobId = this.getAttribute("data-job-id");  // Get Job ID
+              console.log(e);
               sessionStorage.setItem("waitingForApplication", jobId);  // Store Job ID
           });
           

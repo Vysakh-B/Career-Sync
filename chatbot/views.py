@@ -31,9 +31,10 @@ model.eval()  # Set to evaluation mode
 @ensure_csrf_cookie
 def chat(request):
     sessions = ChatSession.objects.filter(user=request.user)
-
+  
     # Process each session to modify the position name
     for session in sessions:
+        
         session.short_position_name = session.position_name.split(",")[0] if "," in session.position_name else session.position_name
 
     return render(request, 'chat.html', {'sessions': sessions})
