@@ -44,11 +44,11 @@
    {% include "navbar.html" %}
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-      .containers { display: flex; width: 100vw; height: 100vh; background-color: black; }
-      .recent { width: 280px; background: #232224; overflow-y: auto; padding: 10px; height: calc(100vh - 90px); margin-top: 90px; scrollbar-width: none; }
-      .chatset { padding: 13px; background: #232224; border-bottom: 1px solid #333; cursor: pointer; }
-      .names { font-size: 18px; color: white; text-align: center; }
-      .chats { flex: 1; display: flex; flex-direction: column; background: #232224; height: calc(100vh - 90px); margin-top: 90px; }
+      .containers { display: flex; width: 100vw; height: 100vh; background:rgb(110, 109, 109); }
+      .recent { width: 280px; background:rgb(255, 255, 255); overflow-y: auto; padding: 10px; height: calc(100vh - 90px); margin-top: 90px; scrollbar-width: none; }
+      .chatset { padding: 13px; background:rgb(216, 216, 216); border-bottom: 1px ; cursor: pointer;border-radius:10px; }
+      .names { font-size: 18px; color: black; text-align: center; }
+      .chats { flex: 1; display: flex; flex-direction: column; background:rgb(255, 255, 255); height: calc(100vh - 90px); margin-top: 90px; }
       .chat-container {
         flex: 1;
         overflow-y: auto;
@@ -56,22 +56,26 @@
         color: white;
         display: flex;
         flex-direction: column;  /* Change from column-reverse to column */
+        scrollbar-width: none;
     }
     
       .msg, .reply { max-width: 60%; padding: 10px; border-radius: 8px; margin: 5px 0; }
-      .msg { background: #2b2a29; align-self: flex-end; text-align: right; border-top-right-radius: 0; }
-      .reply { background: #86827a; align-self: flex-start; text-align: left; border-top-left-radius: 0; }
-      .btm { padding: 10px; display: flex; background: #232224; }
-      .inpt { flex: 1; padding: 10px; border-radius: 12px; border: none; }
-      .btn { background: black; color: white; padding: 10px; border-radius: 8px; border: none; cursor: pointer; }
+      .msg { background: #007bff; align-self: flex-end; text-align: right; border-top-right-radius: 0;box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); }
+      .reply { background: #e0e0e0; align-self: flex-start; text-align: left; border-top-left-radius: 0;color: #333;box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); }
+      .btm { padding: 10px; display: flex;  }
+      .inpt { flex: 1; padding: 10px; border-radius: 12px; outline: none; border: none;background: #d4f8c6;border-radius: 25px;margin-right:5px; }
+      .btn {  color: white; padding: 10px; border-radius: 8px; border: none; cursor: pointer;background: #000;transition: 0.3s; }
+      #send_button:hover {
+        background: #333;
+    }
   </style>
 </head>
 <body>
   <div class="containers">
     <div class="recent">
       {% for session in sessions %}
-      <a href={% url 'get_messages' session.id %}><div class="chatset"><div class="names">{{ session.company_name }} - {{ session.short_position_name }}
-      </div></div></a>
+      <div class="chatset"><div class="names">{{ session.company_name }} - {{ session.short_position_name }}
+      </div></div>
         
       {% endfor %}
         {% comment %} <div class="chatset"><div class="names">Microsoft</div></div>
