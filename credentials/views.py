@@ -28,14 +28,15 @@ def applied(request):
         user_applied_jobs = Job.objects.none()  # Empty queryset if the user is not logged in
     return render(request,'applied.html',{'data':user_applied_jobs})
 # Function to fetch jobs for a user
+
 def fetch_jobs_for_user(user):
     try:
         reg = Registration.objects.get(user=user)
-        
+
         # Ensure user has interested fields
         if not reg.interested_fields:
             return
-        
+
         # Convert comma-separated fields into a search query
         job_query = " OR ".join(reg.interested_fields.split(','))
         delays = "1 day ago"
@@ -69,9 +70,11 @@ def fetch_jobs_for_user(user):
                     "experience_required": job.get("job_experience", 0) or 0,
                     "url": job.get("job_apply_link", ""),
                     "job_posted": job.get("job_posted_human_readable", "1 day ago"),
+                    # Store qualifications & responsibilities as JSON strings
+                    "qualification": json.dumps(job.get("job_highlights", {}).get("Qualifications", [])),
+                    "responsibilities": json.dumps(job.get("job_highlights", {}).get("Responsibilities", [])),
                 }
             )
-
 
         # Update last fetched time
         reg.last_fetched_at = now()

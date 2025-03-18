@@ -10,6 +10,8 @@ class Job(models.Model):
     company = models.CharField(max_length=255)
     location = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField()
+    qualification = models.TextField(blank=True, null=True)
+    responsibilities = models.TextField(blank=True, null=True)
     salary = models.IntegerField(default=0)
     experience_required = models.IntegerField(default=0)
     url = models.URLField(blank=True, null=True)

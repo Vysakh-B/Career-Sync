@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
 from .models import JobApplication, Job
 from django.shortcuts import redirect
+import json
 from django.contrib import messages
 from chatbot.models import ChatSession
 
@@ -14,9 +15,16 @@ def jobs(request):
     return render(request,'job-listings.html',{'data':jobdata})
 def jobdetails(request, id):
     fetched = get_object_or_404(Job, id=id)  # Handles non-existent job IDs safely
-    job_description = fetched.description.split("•")
+    job_description = fetched.description.split("•")  # Split by bullet points
+    job_description = [point.strip() for point in job_description if point.strip()]  # Remove empty items
+
+    # Keep only the first point as a list (for iteration in template)
+    job_description_preview = job_description[:1]  # Returns a list with only the first point
+
+    qual = json.loads(fetched.qualification) if fetched.qualification else []
+    resp = json.loads(fetched.responsibilities) if fetched.responsibilities else []
     flg = JobApplication.objects.filter(jobid=fetched, user=request.user).exists()  # Direct check
-    return render(request, 'job-single.html', {'data': fetched, 'flg': flg, 'job_description': job_description})
+    return render(request, 'job-single.html', {'data': fetched, 'flg': flg, 'job_description': job_description_preview,'qualification':qual,'responsibilities':resp})
 def profile(request):
     return render(request,'profile.html')
 def mark_applied(request):
@@ -29,7 +37,7 @@ def mark_applied(request):
             # Check if the user already applied
         if not JobApplication.objects.filter(user=user_profile, jobid=job).exists():
             JobApplication.objects.create(user=user_profile, jobid=job)
-            ChatSession.objects.create(user=user_profile,company_name=job.company,position_name=job.title)
+            ChatSession.objects.create(user=user_profile,jobid=job,company_name=job.company,position_name=job.title)
             messages.success(request, "Application status updated!")
 
         return redirect("jobs")  # Redirect after form submission
