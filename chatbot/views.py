@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404,redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -26,18 +26,61 @@ model = NeuralNet(input_size, hidden_size, output_size)
 model.load_state_dict(model_state)
 model.eval()  # Set to evaluation mode
 
+def redirecting_chat(request):
+    flag = False
+    sessions = ChatSession.objects.filter(user=request.user)
+    if sessions:
+        flag=True
+    else:
+        flag=False
+    # Process each session to modify the position name
+    # for session in sessions:
+        
+    #     session.short_position_name = session.position_name.split(",")[0] if "," in session.position_name else session.position_name
+
+    # return render(request, 'chat.html', {'sessions': sessions,'flag':flag})
+    return render(request, 'Redirect.html', {'sessions': sessions,'flag':flag})
+
+
 
 @login_required
 @ensure_csrf_cookie
-def chat(request):
+def chats(request):
+    return redirect('redirecting_chat')
     sessions = ChatSession.objects.filter(user=request.user)
-  
     # Process each session to modify the position name
-    for session in sessions:
+    # for session in sessions:
         
-        session.short_position_name = session.position_name.split(",")[0] if "," in session.position_name else session.position_name
+    #     session.short_position_name = session.position_name.split(",")[0] if "," in session.position_name else session.position_name
 
     return render(request, 'chat.html', {'sessions': sessions})
+    # return render(request, 'Redirect.html', {'sessions': sessions,'flag':flag})
+
+def chat(request,id):
+    sessions = ChatSession.objects.get(id=id,user=request.user)
+    # Process each session to modify the position name
+    # for session in sessions:
+        
+    #     session.short_position_name = session.position_name.split(",")[0] if "," in session.position_name else session.position_name
+
+    return render(request, 'chat.html', {'session': sessions})
+    # return render(request, 'Redirect.html', {'sessions': sessions,'flag':flag})
+def freechat(request):
+    session, created = ChatSession.objects.get_or_create(
+        user=request.user,
+        jobid=None,  # Mark it as a free chat session
+        company_name="Free Chat",
+        position_name="General"
+    )
+    return render(request, 'chat.html', {'session': session})
+
+    # Process each session to modify the position name
+    # for session in sessions:
+        
+    #     session.short_position_name = session.position_name.split(",")[0] if "," in session.position_name else session.position_name
+
+    return render(request, 'chat.html', {'session': sessions})
+    # return render(request, 'Redirect.html', {'sessions': sessions,'flag':flag})
 
 @login_required
 def get_messages(request, session_id):

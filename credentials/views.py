@@ -9,9 +9,12 @@ from django.utils.timezone import now
 from datetime import timedelta
 import requests
 from Jobsfetch.models import Job,JobApplication
+from chatbot.models import ChatSession
 
 # Create your views here.
 def logout(request):
+    if request.user.is_authenticated:
+        ChatSession.objects.filter(user=request.user, jobid=None).delete()
     # Call Django's built-in logout function to clear the session and log out the user
     auth_logout(request)
     

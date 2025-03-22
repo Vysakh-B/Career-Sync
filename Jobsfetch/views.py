@@ -44,3 +44,9 @@ def mark_applied(request):
 
     messages.error(request, "Invalid request.")
     return redirect("jobs")
+def delete_apply(request,id):
+    jid = get_object_or_404(JobApplication, jobid=id)  # Ensures object exists or returns 404
+    cht = get_object_or_404(ChatSession, jobid=id)
+    jid.delete()  # Delete the object
+    cht.delete()
+    return redirect("applied")  # Redirect after deletion

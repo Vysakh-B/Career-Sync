@@ -90,7 +90,7 @@
                 <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Save Job</a>
               </div>
               <div class="col-6">
-                <a href={{ data.url }} class="btn btn-block bg-danger btn-md" id="applyBtn" target="_blank" rel="noopener noreferrer"data-job-id="{{ data.id }}" style="color:black;">Cancel</a>
+                <a href={% url 'delete_apply' data.id %} class="btn btn-block bg-danger btn-md"  rel="noopener noreferrer" style="color:black;">Cancel</a>
               </div>
             </div>
           </div>

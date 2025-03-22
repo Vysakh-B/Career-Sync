@@ -20,13 +20,13 @@
   </head>
   <body id="top">
 
-  <div id="overlayer"></div>
+  {% comment %} <div id="overlayer"></div>
   <div class="loader">
     <div class="spinner-border text-primary" role="status">
       <span class="sr-only">Loading...</span>
     </div>
   </div>
-    
+     {% endcomment %}
 
 <div class="site-wrap">
 
@@ -71,13 +71,14 @@
   </style>
 </head>
 <body>
+
   <div class="containers">
     <div class="recent">
-      {% for session in sessions %}
-      <div class="chatset"><div class="names">{{ session.company_name }} - {{ session.short_position_name }}
+      {% comment %} {% for session in session %} {% endcomment %}
+      <div class="chatset"><div class="names">{{ session.company_name }} - {{ session.position_name }}
       </div></div>
         
-      {% endfor %}
+      {% comment %} {% endfor %} {% endcomment %}
         {% comment %} <div class="chatset"><div class="names">Microsoft</div></div>
         <div class="chatset"><div class="names">OpenAI</div></div>
         <div class="chatset"><div class="names">OpenAI</div></div>
@@ -116,7 +117,7 @@
 
 
       let chatBox = document.getElementById("chat-box");
-      let sessionId = "{{ sessions.0.id }}";  // Use first session if available
+      let sessionId = "{{ session.id }}";  // Use first session if available
   
       function getCSRFToken() {
         return document.cookie.split("; ")

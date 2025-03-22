@@ -1,161 +1,25 @@
-{% load static %}
-<!doctype html>
-<html lang="en">
-  <head>
-    <title>JobBoard &mdash; Website Template by Colorlib</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
-    <meta name="author" content="Free-Template.co" />
-    <link rel="shortcut icon" href="ftco-32x32.png">
-    
-    <link rel="stylesheet" href={% static "css/custom-bs.css" %}>
-    <link rel="stylesheet" href={% static "css/jquery.fancybox.min.css" %}>
-    <link rel="stylesheet" href={% static "css/bootstrap-select.min.css" %}>
-    <link rel="stylesheet" href={% static "fonts/icomoon/style.css" %}>
-    <link rel="stylesheet" href={% static "fonts/line-icons/style.css" %}>
-    <link rel="stylesheet" href={% static "css/owl.carousel.min.css" %}>
-    <link rel="stylesheet" href={% static "css/animate.min.css" %}>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button>
 
-    <!-- MAIN CSS -->
-    <link rel="stylesheet" href={% static "css/style.css" %}>    
-  </head>
-  <body id="top">
-
-
-<div class="site-wrap">
-
-    <div class="site-mobile-menu site-navbar-target">
-      <div class="site-mobile-menu-header">
-        <div class="site-mobile-menu-close mt-3">
-          <span class="icon-close2 js-menu-toggle"></span>
-        </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-      <div class="site-mobile-menu-body"></div>
-    </div> <!-- .site-mobile-menu -->
-    
-
-    <!-- NAVBAR -->
- {% include "navbar.html" %}
-     <!-- HOME -->
-  <section class="section-hero home-section overlay inner-page bg-image" style="background-color: black;height:100px;" id="home-section">
-
-  </section>
-<!-- Chat Interface -->
-<div id="chat-container">
-  <div id="chat-header">Chatbot</div>
-  <div id="chat-messages"></div>
-  <div id="chat-input-container">
-      <input type="text" id="chat-input" placeholder="Type a message...">
-      <button id="send-button">Send</button>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
   </div>
 </div>
-
-<!-- Chat Styles -->
-<style>
-  #chat-container {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 300px;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      overflow: hidden;
-  }
-  #chat-header {
-      background: #007bff;
-      color: #fff;
-      padding: 10px;
-      text-align: center;
-      font-weight: bold;
-  }
-  #chat-messages {
-      height: 250px;
-      overflow-y: auto;
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
-  }
-  .message {
-      margin-bottom: 10px;
-      padding: 8px 12px;
-      border-radius: 5px;
-  }
-  .user-message {
-      background: #007bff;
-      color: white;
-      text-align: right;
-  }
-  .bot-message {
-      background: #f1f1f1;
-      text-align: left;
-  }
-  #chat-input-container {
-      display: flex;
-      padding: 10px;
-      background: #f9f9f9;
-  }
-  #chat-input {
-      flex: 1;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      outline: none;
-  }
-  #send-button {
-      background: #007bff;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      margin-left: 5px;
-      cursor: pointer;
-      border-radius: 5px;
-  }
-</style>
-
-<!-- Chat Functionality -->
-<script>
-  document.getElementById("send-button").addEventListener("click", function() {
-      let inputField = document.getElementById("chat-input");
-      let message = inputField.value.trim();
-      if (message) {
-          addMessage(message, "user-message");
-          inputField.value = "";
-          setTimeout(() => addMessage("Hello! How can I assist you?", "bot-message"), 500);
-      }
-  });
-
-  function addMessage(text, className) {
-      let messageDiv = document.createElement("div");
-      messageDiv.classList.add("message", className);
-      messageDiv.textContent = text;
-      document.getElementById("chat-messages").appendChild(messageDiv);
-  }
-</script>
-
-    <!-- HOME -->
-    
-    
-   
-  </div>
-
-    <!-- SCRIPTS -->
-    <script src={% static "js/jquery.min.js" %}></script>
-    <script src={% static "js/bootstrap.bundle.min.js" %}></script>
-    <script src={% static "js/isotope.pkgd.min.js" %}></script>
-    <script src={% static "js/stickyfill.min.js" %}></script>
-    <script src={% static "js/jquery.fancybox.min.js" %}></script>
-    <script src={% static "js/jquery.easing.1.3.js" %}></script>
-    
-    <script src={% static "js/jquery.waypoints.min.js" %}></script>
-    <script src={% static "js/jquery.animateNumber.min.js" %}></script>
-    <script src={% static "js/owl.carousel.min.js" %}></script>
-    
-    <script src={% static "js/bootstrap-select.min.js" %}></script>
-    
-    <script src={% static "js/custom.js" %}></script>
-
-     
-  </body>
-</html>

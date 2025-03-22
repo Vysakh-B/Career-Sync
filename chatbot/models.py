@@ -7,7 +7,7 @@ class ChatSession(models.Model):
     Represents a unique chat session for a user applying to a company position.
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    jobid = models.ForeignKey(Job, on_delete=models.CASCADE)
+    jobid = models.ForeignKey(Job, on_delete=models.CASCADE, null=True, blank=True)
     company_name = models.CharField(max_length=255)
     position_name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
