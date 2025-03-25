@@ -3,7 +3,7 @@ import json
 from django.contrib.auth import logout as auth_logout
 from . models import Registration
 from django.shortcuts import render, redirect
-
+import re
 from django.contrib.auth import authenticate, login
 from django.utils.timezone import now
 from datetime import timedelta
@@ -113,21 +113,24 @@ def signup(request):
         email = request.POST.get('email', '').strip()
         password = request.POST.get('password', '')
         repassword = request.POST.get('repassword', '')
-
-        # Convert experience to boolean
         experience = request.POST.get("experience") == "on"
-        year = int(request.POST.get('year', 0))
-
-        currentsalary = request.POST.get("salary", "0")
-
-        # Convert salary to integer safely
-        currentsalary = int(currentsalary) if currentsalary.isdigit() else 0
-
-        # Handle job fields
+        year = request.POST.get('year', 0)
+        if year == "":
+            year=0
+        # if experience:
+        #     if year < 1:
+        #         err = "if experienced atleast on year is required."
+        #         ch = True
+        #         return render(request, 'signup.html', {'data': err, 'chk': ch})
+        # else:
+        #     year=0
+        year = int(year)
+        # currentsalary = request.POST.get("salary")
+        currentsalary = request.POST.get("salary", "").strip()
+        
+        # currentsalary = int(currentsalary) if currentsalary.isdigit() else 0
         interested = request.POST.get("job_fields", "")
         job_fields_list = interested.split(",") if interested else []
-
-        # Handle free time safely
         free_time_json = request.POST.get("freetime", "[]")
         try:
             free_time_list = json.loads(free_time_json)
@@ -138,6 +141,13 @@ def signup(request):
         free_time_str = json.dumps(free_time_list, indent=2)
 
         ch = False
+        # Validate email format
+        email_regex = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+        if not re.match(email_regex, email):
+            err = "Invalid Email format"
+            ch = True
+            return render(request, 'signup.html', {'data': err, 'chk': ch})  
+
         if User.objects.filter(email=email).exists():
             err = "User already exists"
             ch = True
@@ -152,6 +162,33 @@ def signup(request):
             err = "Password must be at least 8 characters long."
             ch = True
             return render(request, 'signup.html', {'data': err, 'chk': ch})
+
+        if not re.search(r'\d', password):
+            err = "Password must contain atleast one number."
+            ch = True
+            return render(request, 'signup.html', {'data': err, 'chk': ch})
+        if experience:
+            if year < 1:
+                err = "if experienced atleast on year is required."
+                ch = True
+                return render(request, 'signup.html', {'data': err, 'chk': ch})
+            if currentsalary:  # Check if there is a value
+                try:
+                    currentsalary = int(currentsalary)
+                except ValueError:
+                    err = "Invalid salary"
+                    ch = True
+                    return render(request, 'signup.html', {'data': err, 'chk': ch})
+            else:
+                err = "if experienced salary is required."
+                ch = True
+                return render(request, 'signup.html', {'data': err, 'chk': ch})
+
+        if not job_fields_list:  # Check if the list is empty
+            err = "Please select atleast one interested field"
+            ch = True
+            return render(request, 'signup.html', {'data': err, 'chk': ch})
+
 
         # Create the user
         user = User.objects.create_user(username=email, email=email, password=password)

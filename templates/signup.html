@@ -93,7 +93,7 @@
                   </div>
                 </div>
                <!-- year Input (Hidden Initially) -->
-               <div class="row form-group" id="salaryField" style="display: none;">
+               <div class="row form-group" id="yearField" style="display: none;">
                 <div class="col-md-12 mb-3 mb-md-0">
                   <label class="text-black" for="salary">Years</label>
                   <input type="number" id="salary" class="form-control" placeholder="Enter your experience in Years" name="year">
@@ -240,7 +240,9 @@
               });
                 function toggleSalaryField() {
                   var checkBox = document.getElementById("experienced");
+                  var yearField = document.getElementById("yearField");
                   var salaryField = document.getElementById("salaryField");
+                  yearField.style.display = checkBox.checked ? "block" : "none";
                   salaryField.style.display = checkBox.checked ? "block" : "none";
                 }
               

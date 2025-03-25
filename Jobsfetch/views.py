@@ -26,6 +26,48 @@ def jobdetails(request, id):
     flg = JobApplication.objects.filter(jobid=fetched, user=request.user).exists()  # Direct check
     return render(request, 'job-single.html', {'data': fetched, 'flg': flg, 'job_description': job_description_preview,'qualification':qual,'responsibilities':resp})
 def profile(request):
+    if request.method == 'POST':
+        experience = request.POST.get("experience") == "on"
+        year = request.POST.get('year', 0)
+        if year == "":
+            year=0
+        year = int(year)
+        currentsalary = request.POST.get("salary", "").strip()
+        
+        interested = request.POST.get("job_fields", "")
+        job_fields_list = interested.split(",") if interested else []
+        free_time_json = request.POST.get("freetime", "[]")
+        try:
+            free_time_list = json.loads(free_time_json)
+        except json.JSONDecodeError:
+            free_time_list = []
+
+        # Convert free time to a readable string
+        free_time_str = json.dumps(free_time_list, indent=2)
+
+        ch = False
+        if experience:
+            if year < 1:
+                err = "if experienced atleast on year is required."
+                ch = True
+                return render(request, 'profile.html', {'data': err, 'chk': ch})
+            if currentsalary:  # Check if there is a value
+                try:
+                    currentsalary = int(currentsalary)
+                except ValueError:
+                    err = "Invalid salary"
+                    ch = True
+                    return render(request, 'profile.html', {'data': err, 'chk': ch})
+            else:
+                err = "if experienced salary is required."
+                ch = True
+                return render(request, 'profile.html', {'data': err, 'chk': ch})
+
+        if not job_fields_list:  # Check if the list is empty
+            err = "Please select atleast one interested field"
+            ch = True
+            return render(request, 'profile.html', {'data': err, 'chk': ch})
+
     return render(request,'profile.html')
 def mark_applied(request):
     if request.method == "POST" and request.user.is_authenticated:
