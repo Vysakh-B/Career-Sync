@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User,auth
+from django.contrib.auth.decorators import login_required
 import json
 from django.contrib.auth import logout as auth_logout
 from . models import Registration
@@ -20,8 +21,11 @@ def logout(request):
     
     return redirect('index') 
 def index(request):
-    print(request.user)
-    return render(request,'index.html')
+    jobdatas = []
+    if request.user.is_authenticated:
+        user=request.user
+        jobdatas = Job.objects.filter(user=user).order_by('-posted_at')[:5]
+    return render(request,'index.html',{'data':jobdatas})
 def applied(request):
     if request.user.is_authenticated:
         user_applied_jobs = Job.objects.filter(
@@ -209,3 +213,5 @@ def signup(request):
 
     return render(request, 'signup.html')
 
+def contact(request):
+    return render(request,'contact.html')

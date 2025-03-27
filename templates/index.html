@@ -122,36 +122,36 @@
         </div>
         
         <ul class="job-listings mb-5">
+          {% for data in data %}
           <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-            <a href={% url 'jobdetails' 45 %}></a>
-            <div class="job-listing-logo">
-              <img src={% static "images/job_logo_1.jpg" %} alt="Free Website Template by Free-Template.co" class="img-fluid">
-            </div>
+            <a href={% url 'jobdetails' data.id %}></a>
+            {% comment %} <div class="job-listing-logo">
+              <img src={% static "images/job_logo_1.jpg" %} alt="Image" class="img-fluid">
+            </div> {% endcomment %}
 
             <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
               <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
-                <h2>Product Designer</h2>
-                <strong>Adidas</strong>
+                <h2>{{ data.title }}</h2>
+                <strong>{{ data.company }}</strong>
               </div>
               <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
-                <span class="icon-room"></span> New York, New York
+                <span class="icon-room"></span> {{ data.location }}
               </div>
-              <div class="job-listing-meta">
+              {% comment %} <div class="job-listing-meta">
                 <span class="badge badge-danger">Part Time</span>
-              </div>
+              </div> {% endcomment %}
             </div>
             
           </li>
-          
-
+          {% endfor %}
           
         </ul>
 
         <div class="row pagination-wrap">
           <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
-            <span>Showing 1-7 Of 43,167 Jobs</span>
+            <span>Showing 1-5 Of 43,167 Jobs</span>
           </div>
-          <div class="col-md-6 text-center text-md-right">
+          {% comment %} <div class="col-md-6 text-center text-md-right">
             <div class="custom-pagination ml-auto">
               <a href="#" class="prev">Prev</a>
               <div class="d-inline-block">
@@ -162,7 +162,7 @@
               </div>
               <a href="#" class="next">Next</a>
             </div>
-          </div>
+          </div> {% endcomment %}
         </div>
 
       </div>
@@ -176,7 +176,7 @@
             <p class="mb-0 text-white lead">Lorem ipsum dolor sit amet consectetur adipisicing elit tempora adipisci impedit.</p>
           </div>
           <div class="col-md-3 ml-auto">
-            <a href="#" class="btn btn-warning btn-block btn-lg">Sign Up</a>
+            <a href={% url 'signup' %} class="btn btn-warning btn-block btn-lg">Sign Up</a>
           </div>
         </div>
       </div>

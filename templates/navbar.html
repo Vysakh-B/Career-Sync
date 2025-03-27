@@ -12,7 +12,7 @@
             <li><a href={% url 'chats' %}>Chat</a></li>
             <li><a href={% url 'profile' %}>profile</a></li>
             {% endif %}
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href={% url 'contact' %}>Contact</a></li>
             {% if not user.is_authenticated %}
             <li class="d-lg-none"><a href={% url 'signup' %}><span class="mr-2">+</span> Register</a></li>
             <li class="d-lg-none"><a href={% url 'signin' %}>Log In</a></li>

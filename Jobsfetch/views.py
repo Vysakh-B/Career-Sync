@@ -2,11 +2,13 @@ from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
 from .models import JobApplication, Job
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 import json
 from django.contrib import messages
 from chatbot.models import ChatSession
 
 # Create your views here.
+@login_required(login_url='index')
 def jobs(request):
     user=request.user
     jobdata = Job.objects.filter(user=user)
@@ -24,7 +26,8 @@ def jobdetails(request, id):
     qual = json.loads(fetched.qualification) if fetched.qualification else []
     resp = json.loads(fetched.responsibilities) if fetched.responsibilities else []
     flg = JobApplication.objects.filter(jobid=fetched, user=request.user).exists()  # Direct check
-    return render(request, 'job-single.html', {'data': fetched, 'flg': flg, 'job_description': job_description_preview,'qualification':qual,'responsibilities':resp})
+    jobdatas = Job.objects.filter(user=request.user).order_by('-posted_at')[:5]
+    return render(request, 'job-single.html', {'data': fetched, 'flg': flg, 'job_description': job_description_preview,'qualification':qual,'responsibilities':resp,'jobdata':jobdatas})
 def profile(request):
     if request.method == 'POST':
         experience = request.POST.get("experience") == "on"
