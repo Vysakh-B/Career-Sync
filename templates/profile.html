@@ -59,6 +59,11 @@
         <p>{{ data }}</p>
     </div>
       {% endif %}
+      {% if done %}
+      <div class="alert alert-success" style="text-align:center;">
+        <p>{{ data }}</p>
+    </div>
+      {% endif %}
       <div class="alert alert-danger" style="text-align:center;">
         <p>updating fields refresh the data already inserted</p>
     </div>

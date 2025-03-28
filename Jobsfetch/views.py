@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
 from .models import JobApplication, Job
 from django.shortcuts import redirect
+from credentials.models import Registration
 from django.contrib.auth.decorators import login_required
 import json
 from django.contrib import messages
@@ -29,6 +30,9 @@ def jobdetails(request, id):
     jobdatas = Job.objects.filter(user=request.user).order_by('-posted_at')[:5]
     return render(request, 'job-single.html', {'data': fetched, 'flg': flg, 'job_description': job_description_preview,'qualification':qual,'responsibilities':resp,'jobdata':jobdatas})
 def profile(request):
+    ch= False
+    done = False
+    err=""
     if request.method == 'POST':
         experience = request.POST.get("experience") == "on"
         year = request.POST.get('year', 0)
@@ -36,7 +40,7 @@ def profile(request):
             year=0
         year = int(year)
         currentsalary = request.POST.get("salary", "").strip()
-        
+
         interested = request.POST.get("job_fields", "")
         job_fields_list = interested.split(",") if interested else []
         free_time_json = request.POST.get("freetime", "[]")
@@ -47,7 +51,7 @@ def profile(request):
 
         # Convert free time to a readable string
         free_time_str = json.dumps(free_time_list, indent=2)
-
+        done = False
         ch = False
         if experience:
             if year < 1:
@@ -60,18 +64,26 @@ def profile(request):
                 except ValueError:
                     err = "Invalid salary"
                     ch = True
-                    return render(request, 'profile.html', {'data': err, 'chk': ch})
+                    return render(request, 'profile.html', {'data': err, 'chk': ch,'done':done})
             else:
                 err = "if experienced salary is required."
                 ch = True
-                return render(request, 'profile.html', {'data': err, 'chk': ch})
+                return render(request, 'profile.html', {'data': err, 'chk': ch,'done':done})
 
         if not job_fields_list:  # Check if the list is empty
             err = "Please select atleast one interested field"
             ch = True
-            return render(request, 'profile.html', {'data': err, 'chk': ch})
-
-    return render(request,'profile.html')
+            return render(request, 'profile.html', {'data': err, 'chk': ch,'done':done})
+        up = Registration.objects.get(user=request.user)
+        up.experienced=experience    
+        up.years=year
+        up.salary=currentsalary
+        up.interested_fields=", ".join(job_fields_list)
+        up.free_time=free_time_str
+        up.save()
+        err = "Profile Updated"
+        done=True
+    return render(request,'profile.html', {'data': err, 'chk': ch,'done':done})
 def mark_applied(request):
     if request.method == "POST" and request.user.is_authenticated:
         job_id = request.POST.get("job_id")
