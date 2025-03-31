@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import ChatSession, ChatMessage
 import json
+from Jobsfetch.models import Job,JobApplication
 import torch
 from chatbot.model import NeuralNet  # Ensure this matches your model definition
 from chatbot.nltk_utils import tokenize,bag_of_words
@@ -28,7 +29,7 @@ model.eval()  # Set to evaluation mode
 
 def redirecting_chat(request):
     flag = False
-    sessions = ChatSession.objects.filter(user=request.user)
+    sessions = ChatSession.objects.filter(user=request.user).exclude(company_name="Free Chat", position_name="General")
     if sessions:
         flag=True
     else:
@@ -40,6 +41,29 @@ def redirecting_chat(request):
 
     # return render(request, 'chat.html', {'sessions': sessions,'flag':flag})
     return render(request, 'Redirect.html', {'sessions': sessions,'flag':flag})
+
+def read_interview(request, id):
+    sesion = ChatSession.objects.get(id=id)
+    job = sesion.jobid
+    application = JobApplication.objects.get(user=request.user, jobid=job)
+    if application.interview_date:
+        return redirect('chat', id=id) # 'success_page'
+    if request.method == 'POST':
+        dates = request.POST.get('interview_date', '').strip()
+
+        if not dates:
+            return render(request, 'Read_interview.html', {
+                'app': application,
+                'sessionid': id,
+                'error': "Please enter a valid date."
+            })
+
+        # Process the date (save in DB, etc.)
+        application.interview_date = dates
+        application.save()
+        return redirect('chat', id=id) # 'success_page'
+
+    return render(request, 'Read_interview.html', {'app': application, 'sessionid': id})
 
 
 

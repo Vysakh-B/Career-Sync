@@ -25,7 +25,7 @@ class Job(models.Model):
 class JobApplication(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     jobid = models.ForeignKey(Job, on_delete=models.CASCADE)
-    interview_date = models.CharField(max_length=20,default="")
+    interview_date = models.DateField(null=True, blank=True)
     applied_at = models.DateTimeField(auto_now_add=True) 
 
     def __str__(self):

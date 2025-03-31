@@ -49,7 +49,7 @@
                   <img src={% static "images/job_logo_1.jpg" %} alt="Image" class="img-fluid">
                 </div> {% endcomment %}
     
-                <a href={% url 'chat' comp.id %}><div style="color:rgb(0, 0, 0); text-decoration: none;border-bottom: 3px solid blue;padding-bottom: 10px;">
+                <a href={% url 'read_interview' comp.id %}><div style="color:rgb(0, 0, 0); text-decoration: none;border-bottom: 3px solid blue;padding-bottom: 10px;">
                   
                     <h6>{{ comp.company_name }}-{{ comp.position_name }}</h6>
                     {% comment %} <strong>{{ data.company }}</strong> {% endcomment %}
