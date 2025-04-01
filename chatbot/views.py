@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import ChatSession, ChatMessage
 import json
+import google.generativeai as genai
 from Jobsfetch.models import Job,JobApplication
 import torch
 from chatbot.model import NeuralNet  # Ensure this matches your model definition
@@ -13,7 +14,7 @@ from chatbot.nltk_utils import tokenize,bag_of_words
 # Load the trained data
 MODEL_PATH = r"C:\Users\HP\Desktop\S4\Project\JobInterview\chatbot\data.pth"
 data = torch.load(MODEL_PATH, map_location=torch.device("cpu"))
-
+genai.configure(api_key="AIzaSyAfYd_rzyNuxWhrocGltVZlmJK-0_UQLs8")
 # Extract saved data
 input_size = data["input_size"]
 hidden_size = data["hidden_size"]
@@ -136,22 +137,18 @@ def send_message(request):
             sender="user",
             message=message
         )
-        # **DEBUG STEP 1: Check User Input**
-        print(f"User Input: {message}")
-        # **Process message with chatbot model**
+
+        # **Process message with ML chatbot model**
         sentence = tokenize(message)
         X = bag_of_words(sentence, all_words)
-        X = torch.tensor(X, dtype=torch.float).unsqueeze(0)  # Convert to tensor
-        # **DEBUG STEP 2: Check Tokenized Input**
-        print(f"Tokenized Input: {sentence}")
-        print(f"Bag of Words Representation: {X}")
+        X = torch.tensor(X, dtype=torch.float).unsqueeze(0)
+
         with torch.no_grad():
-            output = model(X)
-            _, predicted = torch.max(output, dim=1)  # Get highest probability index
-            tag = tags[predicted.item()]  # Map index to tag
-        # **DEBUG STEP 3: Check Predicted Tag**
-        print(f"Predicted Tag: {tag}")
-        # Load response from intents JSON
+            output = model(X)  # ML model (do not rename this)
+            _, predicted = torch.max(output, dim=1)
+            tag = tags[predicted.item()]
+
+        # Load response from intents.json
         try:
             with open(r"C:\Users\HP\Desktop\S4\Project\JobInterview\chatbot\intents.json", "r") as f:
                 intents = json.load(f)
@@ -159,13 +156,29 @@ def send_message(request):
             print(f"Error Loading intents.json: {e}")
             return JsonResponse({"error": "Chatbot data not found"}, status=500)
 
-        bot_reply = "I'm not sure how to respond."
-        
+        bot_reply = None  # Initialize empty bot reply
+
         for intent in intents["intents"]:
             if intent["tag"] == tag:
                 bot_reply = intent["responses"][0]  # Pick first response
-        # **DEBUG STEP 4: Check Fetched Response**
-        print(f"Bot Reply: {bot_reply}")
+                print(tag)
+                break
+        # **Detect if the trained model response is generic or irrelevant**
+        default_responses = [
+            "Hello! How can I assist you with your interview preparation?",
+            "I'm here to help you with interview-related queries!"
+        ]
+
+        # **If trained model has no reply, use Gemini API**
+        if not bot_reply or bot_reply == "I'm not sure how to respond." or bot_reply in default_responses:
+            print("Fallback to Gemini API")
+            try:
+                gemini_model = genai.GenerativeModel("gemini-1.5-flash")  # Use a different variable name
+                response = gemini_model.generate_content(message)  # Pass user input
+                bot_reply = response.text
+            except Exception as e:
+                print(f"Error calling Gemini API: {e}")
+                bot_reply = "I'm unable to generate a response at the moment."
 
         # Save AI response
         ChatMessage.objects.create(
