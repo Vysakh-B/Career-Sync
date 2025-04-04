@@ -131,6 +131,9 @@ def signup(request):
         year = int(year)
         # currentsalary = request.POST.get("salary")
         currentsalary = request.POST.get("salary", "").strip()
+        currentsalary = request.POST.get("salary", "").strip()
+        currentsalary = int(currentsalary) if currentsalary.isdigit() else 0 
+
         
         # currentsalary = int(currentsalary) if currentsalary.isdigit() else 0
         interested = request.POST.get("job_fields", "")
@@ -143,7 +146,7 @@ def signup(request):
 
         # Convert free time to a readable string
         free_time_str = json.dumps(free_time_list, indent=2)
-
+        
         ch = False
         # Validate email format
         email_regex = r'^[\w\.-]+@[\w\.-]+\.\w+$'
@@ -171,6 +174,7 @@ def signup(request):
             err = "Password must contain atleast one number."
             ch = True
             return render(request, 'signup.html', {'data': err, 'chk': ch})
+        
         if experience:
             if year < 1:
                 err = "if experienced atleast on year is required."

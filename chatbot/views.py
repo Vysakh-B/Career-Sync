@@ -166,7 +166,8 @@ def send_message(request):
         # **Detect if the trained model response is generic or irrelevant**
         default_responses = [
             "Hello! How can I assist you with your interview preparation?",
-            "I'm here to help you with interview-related queries!"
+            "I'm here to help you with interview-related queries!",
+            "Research the company, practice common questions, and be confident. Mock interviews help a lot!"
         ]
 
         # **If trained model has no reply, use Gemini API**
