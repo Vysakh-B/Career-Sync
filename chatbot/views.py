@@ -125,6 +125,12 @@ def send_message(request):
         data = json.loads(request.body)
         session_id = data.get("session_id")
         message = data.get("message")
+        instances = ChatSession.objects.get(id=session_id)
+        company = instances.company_name
+        position = instances.position_name
+        job_id = instances.jobid
+
+
 
         if not message:
             return JsonResponse({"error": "Message cannot be empty"}, status=400)
@@ -174,8 +180,18 @@ def send_message(request):
         if not bot_reply or bot_reply == "I'm not sure how to respond." or bot_reply in default_responses:
             print("Fallback to Gemini API")
             try:
+                # Context-aware prompt
+                context_prompt = (
+                f"You are a job assistant helping a user prepare for an interview.\n"
+                f"The user is currently applying to {company} for the position of {position}.\n"
+                f"Only answer in the context of this company and job role. Be specific and do not mention other companies.\n"
+                f"User: {message}"
+                )
                 gemini_model = genai.GenerativeModel("gemini-1.5-flash")  # Use a different variable name
-                response = gemini_model.generate_content(message)  # Pass user input
+                if (company == "Free Chat" and position == "General"):
+                    response = gemini_model.generate_content(message)  # Pass user input
+                else:
+                    response = gemini_model.generate_content(context_prompt)  # Pass user input
                 bot_reply = response.text
             except Exception as e:
                 print(f"Error calling Gemini API: {e}")
