@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'credentials',
     'Jobsfetch',
     'chatbot',
+    'django_celery_beat',
     
 ]
 
@@ -131,7 +132,21 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Celery settings
-# CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Use Redis as the broker
-# CELERY_ACCEPT_CONTENT = ['json']
-# CELERY_TASK_SERIALIZER = 'json'
+
+# settings.py
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Or your Redis URL
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'career.sync.ai@gmail.com'      # your Gmail
+EMAIL_HOST_PASSWORD = 'kwym hksx tztj tybk'             # App password (not Gmail password)
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+

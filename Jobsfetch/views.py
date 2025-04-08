@@ -40,7 +40,7 @@ def profile(request):
             year=0
         year = int(year)
         currentsalary = request.POST.get("salary", "").strip()
-
+        currentsalary = int(currentsalary) if currentsalary.isdigit() else 0 
         interested = request.POST.get("job_fields", "")
         job_fields_list = interested.split(",") if interested else []
         free_time_json = request.POST.get("freetime", "[]")

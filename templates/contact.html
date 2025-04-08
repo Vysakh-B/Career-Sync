@@ -94,7 +94,7 @@
     {% include "navbar.html" %}
 
     <!-- HOME -->
-    <section class="section-hero overlay inner-page bg-image" style="background-image: url('images/hero_1.jpg');" id="home-section">
+    <section class="section-hero overlay inner-page bg-image" style="background-image: url({% static 'images/hero_1.jpg' %});" id="home-section">
       <div class="container">
         <div class="row">
           <div class="col-md-7">
@@ -110,18 +110,28 @@
 
     <section class="site-section" id="next-section">
       <div class="container">
+        {% if flag %}
+      <div class="alert alert-danger" style="text-align:center;">
+        <p>{{ err }}</p>
+    </div>
+      {% endif %}
+      {% if sf %}
+      <div class="alert alert-success" style="text-align:center;">
+        <p>{{ err }}</p>
+    </div>
+      {% endif %}
         <div class="row">
           <div class="col-lg-6 mb-5 mb-lg-0">
-            <form action="#" class="">
-
+            <form action="#" class="" method="POST" >
+                {% csrf_token %}
               <div class="row form-group">
                 <div class="col-md-6 mb-3 mb-md-0">
                   <label class="text-black" for="fname">First Name</label>
-                  <input type="text" id="fname" class="form-control">
+                  <input type="text" id="fname" class="form-control" name="fname" >
                 </div>
                 <div class="col-md-6">
                   <label class="text-black" for="lname">Last Name</label>
-                  <input type="text" id="lname" class="form-control">
+                  <input type="text" id="lname" class="form-control" name="lname">
                 </div>
               </div>
 
@@ -129,7 +139,7 @@
                 
                 <div class="col-md-12">
                   <label class="text-black" for="email">Email</label> 
-                  <input type="email" id="email" class="form-control">
+                  <input type="email" id="email" class="form-control" name="email">
                 </div>
               </div>
 
@@ -137,7 +147,7 @@
                 
                 <div class="col-md-12">
                   <label class="text-black" for="subject">Subject</label> 
-                  <input type="subject" id="subject" class="form-control">
+                  <input type="subject" id="subject" class="form-control" name="subject" >
                 </div>
               </div>
 
@@ -160,13 +170,13 @@
           <div class="col-lg-5 ml-auto">
             <div class="p-4 mb-3 bg-white">
               <p class="mb-0 font-weight-bold">Address</p>
-              <p class="mb-4">203 Fake St. Mountain View, San Francisco, California, USA</p>
+              <p class="mb-4">Mount Zion College og Engineering, Kadammanitta, Pathanamthitta, Kerala</p>
 
               <p class="mb-0 font-weight-bold">Phone</p>
-              <p class="mb-4"><a href="#">+1 232 3235 324</a></p>
+              <p class="mb-4"><a href="#">+91 8590696635</a></p>
 
               <p class="mb-0 font-weight-bold">Email Address</p>
-              <p class="mb-0"><a href="#">youremail@domain.com</a></p>
+              <p class="mb-0"><a href="#">career.sync.ai@gmail.com</a></p>
 
             </div>
           </div>

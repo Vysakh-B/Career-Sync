@@ -11,6 +11,12 @@ from datetime import timedelta
 import requests
 from Jobsfetch.models import Job,JobApplication
 from chatbot.models import ChatSession
+from django.core.mail import send_mail
+
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.contrib.auth.tokens import default_token_generator
+
 
 # Create your views here.
 def logout(request):
@@ -218,4 +224,126 @@ def signup(request):
     return render(request, 'signup.html')
 
 def contact(request):
-    return render(request,'contact.html')
+    flag = False
+    success_flag = False
+    errormsg = ""
+    if request.method == "POST":
+        fname = request.POST.get('fname')
+        lname = request.POST.get('lname')
+        user_email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+        if not fname:
+            flag = True
+            errormsg = "First name is required."
+            return render(request,'contact.html',{'flag':flag,'sf':success_flag,'err':errormsg})
+        elif not lname:
+            flag = True
+            errormsg = "Last name is required."
+            return render(request,'contact.html',{'flag':flag,'sf':success_flag,'err':errormsg})
+        elif not user_email:
+            flag = True
+            errormsg = "Email is required."
+            return render(request,'contact.html',{'flag':flag,'sf':success_flag,'err':errormsg})
+        elif not subject:
+            flag = True
+            errormsg = "Subject is required."
+            return render(request,'contact.html',{'flag':flag,'sf':success_flag,'err':errormsg})
+        elif not message:
+            flag = True
+            errormsg = "Message cannot be empty."
+            return render(request,'contact.html',{'flag':flag,'sf':success_flag,'err':errormsg})
+        else:
+
+            # Compose the full email body
+            email_body = f"""
+            You received a new message from the contact form.
+
+            Name: {fname} {lname}
+            Email: {user_email}
+
+            Subject: {subject}
+
+            Message:
+            {message}
+            """
+
+            try:
+                send_mail(
+                    subject=f"Contact Form - {subject}",
+                    message=email_body,
+                    from_email='career.sync.ai@gmail.com',
+                    recipient_list=['career.sync.ai@gmail.com'],
+                    fail_silently=False,
+                )
+                # messages.success(request, "Your message was sent successfully.")
+                success_flag=True
+                errormsg = "Your message was sent successfully."
+
+            except Exception as e:
+                print("Error sending email:", e)
+                # messages.error(request, "There was an error sending your message. Please try again later.")
+                flag = True
+                errormsg = "There was an error sending your message. Please try again later.."
+
+            return render(request,'contact.html',{'flag':flag,'sf':success_flag,'err':errormsg})  # Adjust this if your URL name is different
+    return render(request,'contact.html',{'flag':flag,'sf':success_flag,'err':errormsg})
+
+def forgot_password(request):
+    flg = False
+    errormsg = ""
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        if not email:
+            flg = True
+            errormsg='Please enter an email.'
+            return render(request,'forgot_password.html',{'flg':flg,'err':errormsg})
+        try:
+            user = User.objects.get(email=email)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+            reset_link = request.build_absolute_uri(f'/reset-password/{uid}/{token}/')
+            
+            # Send email
+            send_mail(
+                'Password Reset Request - Career Sync',
+                f'Hi {user.username},\n\nClick the link below to reset your password:\n{reset_link}\n\nIf you did not request this, ignore this email.',
+                'career.sync.ai@gmail.com',
+                [user.email],
+                fail_silently=False,
+            )
+            flg = True
+            errormsg='Password reset link has been sent to your email.'
+            return render(request,'forgot_password.html',{'flg':flg,'err':errormsg})
+        except User.DoesNotExist:
+            flg = True
+            errormsg='No account found with that email.'
+    return render(request,'forgot_password.html',{'flg':flg,'err':errormsg})
+
+def reset_password_view(request, uidb64, token):
+    flg = False
+    errormsg = ""
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (User.DoesNotExist, ValueError, TypeError, OverflowError):
+        user = None
+
+    if user and default_token_generator.check_token(user, token):
+        if request.method == 'POST':
+            new_password = request.POST.get('password')
+            confirm_password = request.POST.get('confirmPassword')
+            if new_password == confirm_password:
+                user.set_password(new_password)
+                user.save()
+                flg = True
+                errormsg = 'Your password has been reset. You can now log in.'
+                return redirect('signin')
+            else:
+                flg = True
+                errormsg = 'Passwords do not match.'
+                # messages.error(request, 'Passwords do not match.')
+
+        return render(request, 'reset_password.html', {'validlink': True,'flg':flg,'err':errormsg})
+    else:
+        return render(request, 'reset_password.html', {'validlink': False,'flg':flg,'err':errormsg})
