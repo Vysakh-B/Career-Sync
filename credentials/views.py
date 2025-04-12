@@ -46,11 +46,9 @@ def fetch_jobs_for_user(user):
     try:
         reg = Registration.objects.get(user=user)
 
-        # Ensure user has interested fields
         if not reg.interested_fields:
-            return
+            return True  # No interest fields, but not an error
 
-        # Convert comma-separated fields into a search query
         job_query = " OR ".join(reg.interested_fields.split(','))
         delays = "1 day ago"
 
@@ -61,21 +59,22 @@ def fetch_jobs_for_user(user):
         }
         params = {
             "query": job_query,
-            "page": 1,  # Fetch first page
-            "num_pages": 1,  # Number of pages to fetch
+            "page": 1,
+            "num_pages": 1,
             "job_posted_human_readable": delays
         }
 
-        response = requests.get(url, headers=headers, params=params)
+        response = requests.get(url, headers=headers, params=params, timeout=5)
+        response.raise_for_status()  # Raises HTTPError for bad responses
+
         jobs_data = response.json()
 
-        # Save jobs in the database
-        for job in jobs_data.get("data", []):  # Get job list safely
+        for job in jobs_data.get("data", []):
             Job.objects.update_or_create(
-                job_id=job.get("job_id", ""),  # Use .get() to prevent KeyErrors
+                job_id=job.get("job_id", ""),
                 defaults={
                     "user": user,
-                    "title": job.get("job_title", "No Title"),  # If title is missing, set default
+                    "title": job.get("job_title", "No Title"),
                     "company": job.get("employer_name", "Unknown"),
                     "location": job.get("job_location", "Not Specified"),
                     "description": job.get("job_description", ""),
@@ -83,20 +82,21 @@ def fetch_jobs_for_user(user):
                     "experience_required": job.get("job_experience", 0) or 0,
                     "url": job.get("job_apply_link", ""),
                     "job_posted": job.get("job_posted_human_readable", "1 day ago"),
-                    # Store qualifications & responsibilities as JSON strings
                     "qualification": json.dumps(job.get("job_highlights", {}).get("Qualifications", [])),
                     "responsibilities": json.dumps(job.get("job_highlights", {}).get("Responsibilities", [])),
                 }
             )
 
-        # Update last fetched time
         reg.last_fetched_at = now()
         reg.save()
+        return True
 
+    except requests.exceptions.RequestException:
+        return False  # Network or API error
     except Registration.DoesNotExist:
-        pass  # User does not have a registration profile
-
+        return True  # No registration is not an error in this case
 # Modified sign-in view
+
 def signin(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -104,19 +104,19 @@ def signin(request):
         user = authenticate(request, username=email, password=pswd)
 
         if user is not None:
-            login(request, user)
 
-            # Fetch jobs only if 24 hours have passed
             reg = Registration.objects.filter(user=user).first()
             if reg and (not reg.last_fetched_at or now() - reg.last_fetched_at > timedelta(hours=24)):
-                fetch_jobs_for_user(user)
+                result = fetch_jobs_for_user(user)
+                if not result:
+                    return redirect('not_found')  # This should be the name of your 404 URL
+            login(request, user)
 
             return redirect('index')
         else:
             return render(request, 'login.html', {'data': 'Invalid credentials', 'fg': True})
 
     return render(request, 'login.html')
-
 
 def signup(request):
     if request.method == 'POST':
@@ -347,3 +347,5 @@ def reset_password_view(request, uidb64, token):
         return render(request, 'reset_password.html', {'validlink': True,'flg':flg,'err':errormsg})
     else:
         return render(request, 'reset_password.html', {'validlink': False,'flg':flg,'err':errormsg})
+def not_found(request):
+    return render(request,'404_page.html')
