@@ -93,141 +93,67 @@
 
     {% include "navbar.html" %}
 
-    <!-- HOME -->
+    <!-- TERMS AND CONDITIONS -->
     <section class="section-hero overlay inner-page bg-image" style="background-image: url({% static 'images/hero_1.jpg' %});" id="home-section">
       <div class="container">
         <div class="row">
           <div class="col-md-7">
-            <h1 class="text-white font-weight-bold">Contact Us</h1>
+            <h1 class="text-white font-weight-bold">Terms and Conditions</h1>
             <div class="custom-breadcrumbs">
               <a href={% url 'index' %}>Home</a> <span class="mx-2 slash">/</span>
-              <span class="text-white"><strong>Contact Us</strong></span>
+              <span class="text-white"><strong>Terms and Conditions</strong></span>
             </div>
           </div>
         </div>
       </div>
     </section>
-
+    
     <section class="site-section" id="next-section">
       <div class="container">
-        {% if flag %}
-      <div class="alert alert-danger" style="text-align:center;">
-        <p>{{ err }}</p>
-    </div>
-      {% endif %}
-      {% if sf %}
-      <div class="alert alert-success" style="text-align:center;">
-        <p>{{ err }}</p>
-    </div>
-      {% endif %}
-        <div class="row">
-          <div class="col-lg-6 mb-5 mb-lg-0">
-            <form action="#" class="" method="POST" >
-                {% csrf_token %}
-              <div class="row form-group">
-                <div class="col-md-6 mb-3 mb-md-0">
-                  <label class="text-black" for="fname">First Name</label>
-                  <input type="text" id="fname" class="form-control" name="fname" >
-                </div>
-                <div class="col-md-6">
-                  <label class="text-black" for="lname">Last Name</label>
-                  <input type="text" id="lname" class="form-control" name="lname">
-                </div>
-              </div>
-
-              <div class="row form-group">
-                
-                <div class="col-md-12">
-                  <label class="text-black" for="email">Email</label> 
-                  <input type="email" id="email" class="form-control" name="email">
-                </div>
-              </div>
-
-              <div class="row form-group">
-                
-                <div class="col-md-12">
-                  <label class="text-black" for="subject">Subject</label> 
-                  <input type="subject" id="subject" class="form-control" name="subject" >
-                </div>
-              </div>
-
-              <div class="row form-group">
-                <div class="col-md-12">
-                  <label class="text-black" for="message">Message</label> 
-                  <textarea name="message" id="message" cols="30" rows="7" class="form-control" placeholder="Write your notes or questions here..."></textarea>
-                </div>
-              </div>
-
-              <div class="row form-group">
-                <div class="col-md-12">
-                  <input type="submit" value="Send Message" class="btn btn-primary btn-md text-white">
-                </div>
-              </div>
-
-  
-            </form>
-          </div>
-          <div class="col-lg-5 ml-auto">
-            <div class="p-4 mb-3 bg-white">
-              <p class="mb-0 font-weight-bold">Address</p>
-              <p class="mb-4">Mount Zion College og Engineering, Kadammanitta, Pathanamthitta, Kerala</p>
-
-              <p class="mb-0 font-weight-bold">Phone</p>
-              <p class="mb-4"><a href="#">+91 8590696635</a></p>
-
-              <p class="mb-0 font-weight-bold">Email Address</p>
-              <p class="mb-0"><a href="#">career.sync.ai@gmail.com</a></p>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="site-section bg-light">
-      <div class="container">
         <div class="row mb-5">
-          <div class="col-12 text-center" data-aos="fade">
-            <h2 class="section-title mb-3">Happy Candidates Says</h2>
+          <div class="col-12">
+            <h2 class="section-title mb-3">Introduction</h2>
+            <p>These Terms and Conditions govern your use of the Career Sync platform. By using our platform, you agree to comply with these terms. If you do not agree with any part of these terms, you should not use the platform.</p>
+    
+            <h2 class="section-title mb-3 mt-5">Use of Our Platform</h2>
+            <p>You agree to use the Career Sync platform for lawful purposes only. You must not use the platform in a manner that could damage, disable, or impair the operation of the platform or interfere with other users' use of the platform.</p>
+    
+            <h2 class="section-title mb-3 mt-5">Account Registration</h2>
+            <p>To access certain features of the platform, you must create an account. You are responsible for maintaining the confidentiality of your account details, including your password, and for all activities that occur under your account.</p>
+    
+            <h2 class="section-title mb-3 mt-5">Intellectual Property</h2>
+            <p>All content on the platform, including text, graphics, logos, images, and software, is the property of Career Sync and is protected by copyright laws. You may not use, modify, or distribute the content without prior permission.</p>
+    
+            <h2 class="section-title mb-3 mt-5">Prohibited Conduct</h2>
+            <p>You agree not to engage in the following prohibited activities:</p>
+            <ul>
+              <li>Posting or transmitting harmful, defamatory, or unlawful content.</li>
+              <li>Impersonating another person or entity.</li>
+              <li>Using the platform to conduct fraudulent activities or activities that violate the rights of others.</li>
+            </ul>
+    
+            <h2 class="section-title mb-3 mt-5">Termination</h2>
+            <p>We reserve the right to suspend or terminate your account at any time if you violate these Terms and Conditions or engage in prohibited conduct. Upon termination, your access to the platform will be revoked.</p>
+    
+            <h2 class="section-title mb-3 mt-5">Limitation of Liability</h2>
+            <p>To the fullest extent permitted by law, Career Sync is not liable for any direct, indirect, incidental, special, or consequential damages arising from your use or inability to use the platform.</p>
+    
+            <h2 class="section-title mb-3 mt-5">Governing Law</h2>
+            <p>These Terms and Conditions are governed by and construed in accordance with the laws of India. Any disputes related to these terms will be subject to the exclusive jurisdiction of the courts in Kerala, India.</p>
+    
+            <h2 class="section-title mb-3 mt-5">Modifications</h2>
+            <p>We reserve the right to modify these Terms and Conditions at any time. Any changes will be posted on this page, and your continued use of the platform after such changes will constitute your acceptance of the new terms.</p>
+    
+            <h2 class="section-title mb-3 mt-5">Contact Us</h2>
+            <p>If you have any questions about these Terms and Conditions, you may contact us at <a href="mailto:career.sync.ai@gmail.com">career.sync.ai@gmail.com</a>.</p>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="block__87154 bg-white rounded">
-              <blockquote>
-                <p>&ldquo;Ipsum harum assumenda in eum vel eveniet numquam cumque vero vitae enim cupiditate deserunt eligendi officia modi consectetur. Expedita tempora quos nobis earum hic ex asperiores quisquam optio nostrum sit&rdquo;</p>
-              </blockquote>
-              <div class="block__91147 d-flex align-items-center">
-                <figure class="mr-4"><img src={% static "images/person_1.jpg" %} alt="Image" class="img-fluid"></figure>
-                <div>
-                  <h3>Elisabeth Smith</h3>
-                  <span class="position">Creative Director</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="block__87154 bg-white rounded">
-              <blockquote>
-                <p>&ldquo;Ipsum harum assumenda in eum vel eveniet numquam, cumque vero vitae enim cupiditate deserunt eligendi officia modi consectetur. Expedita tempora quos nobis earum hic ex asperiores quisquam optio nostrum sit&rdquo;</p>
-              </blockquote>
-              <div class="block__91147 d-flex align-items-center">
-                <figure class="mr-4"><img src={% static "images/person_2.jpg" %} alt="Image" class="img-fluid"></figure>
-                <div>
-                  <h3>Chris Peter</h3>
-                  <span class="position">Web Designer</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
         </div>
       </div>
     </section>
     
     {% include "footer.html" %}
+    
+    
   
   </div>
 

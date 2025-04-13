@@ -349,3 +349,11 @@ def reset_password_view(request, uidb64, token):
         return render(request, 'reset_password.html', {'validlink': False,'flg':flg,'err':errormsg})
 def not_found(request):
     return render(request,'404_page.html')
+def faq(request):
+    return render(request,'faq.html')
+def about(request):
+    return render(request,'about.html')
+def privacy(request):
+    return render(request,'privacy.html')
+def terms(request):
+    return render(request,'Terms_condition.html')
