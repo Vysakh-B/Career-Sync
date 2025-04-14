@@ -108,8 +108,8 @@ def signin(request):
             reg = Registration.objects.filter(user=user).first()
             if reg and (not reg.last_fetched_at or now() - reg.last_fetched_at > timedelta(hours=24)):
                 result = fetch_jobs_for_user(user)
-                if not result:
-                    return redirect('not_found')  # This should be the name of your 404 URL
+                # if not result:
+                #     return redirect('not_found')  
             login(request, user)
 
             return redirect('index')

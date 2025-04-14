@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+      color: #333;
+    }
+    .email-container {
+      max-width: 600px;
+      background-color: white;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .header {
+      font-size: 24px;
+      color: #1a73e8;
+      margin-bottom: 15px;
+    }
+    .tip {
+      font-size: 16px;
+      margin-top: 15px;
+      background: #e8f0fe;
+      padding: 15px;
+      border-left: 4px solid #1a73e8;
+      border-radius: 5px;
+    }
+    .footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <div class="header">Hello {{ username }} 👋</div>
+    <p>Here’s your <strong>daily interview tip</strong> to help you get closer to your dream job:</p>
+
+    <div class="tip">
+      {{ tip }}
+    </div>
+
+    <p class="footer">
+      Keep learning,<br>
+      <strong>Team Career Sync</strong><br>
+      <a href="mailto:career.sync.ai@gmail.com">career.sync.ai@gmail.com</a>
+    </p>
+  </div>
+</body>
+</html>
