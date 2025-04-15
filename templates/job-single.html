@@ -52,7 +52,7 @@
             <h1 class="text-white font-weight-bold">{{ data.title }}</h1>
             <div class="custom-breadcrumbs">
               <a href={% url 'index' %}>Home</a> <span class="mx-2 slash">/</span>
-              <a href={% url 'job' %}>Job</a> <span class="mx-2 slash">/</span>
+              <a href={% url 'jobs' %}>Job</a> <span class="mx-2 slash">/</span>
               <span class="text-white"><strong>{{ data.title }}</strong></span>
             </div>
           </div>
@@ -66,9 +66,9 @@
         <div class="row align-items-center mb-5">
           <div class="col-lg-8 mb-4 mb-lg-0">
             <div class="d-flex align-items-center">
-              <div class="border p-2 d-inline-block mr-3 rounded">
+              {% comment %} <div class="border p-2 d-inline-block mr-3 rounded">
                 <img src={% static "images/job_logo_5.jpg" %} alt="Image">
-              </div>
+              </div> {% endcomment %}
               <div>
                 <h2>{{ data.title }}</h2>
                 <div>
@@ -98,9 +98,9 @@
           {% if not flg %}
           <div class="col-lg-4">
             <div class="row">
-              <div class="col-6">
+              {% comment %} <div class="col-6">
                 <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Save Job</a>
-              </div>
+              </div> {% endcomment %}
               <div class="col-6">
                 <a href={{ data.url }} class="btn btn-block btn-primary btn-md" id="applyBtn" target="_blank" rel="noopener noreferrer"data-job-id="{{ data.id }}" >Apply Now</a>
               </div>
@@ -315,6 +315,13 @@
   
   </div>
 
+  <script type="text/javascript">
+    // This will refresh the page and prevent going back to the cached page
+    if (performance.navigation.type === 2) {
+        // If the page is loaded from back or forward navigation
+        window.location.reload(true);
+    }
+</script>
     <!-- SCRIPTS -->
     <script src={% static "js/jquery.min.js" %}></script>
     <script src={% static "js/bootstrap.bundle.min.js" %}></script>

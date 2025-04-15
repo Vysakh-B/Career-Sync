@@ -52,6 +52,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # 'credentials.middleware.login_required_middleware.LoginRequiredMiddleware',  # ← Add this
 ]
 
 ROOT_URLCONF = 'JobInterview.urls'

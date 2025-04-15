@@ -20,11 +20,11 @@
     <!-- MAIN CSS -->
     <link rel="stylesheet" href={% static "css/style.css" %}> 
     
-    <script type="text/javascript">
+    {% comment %} <script type="text/javascript">
       function preventBack() { window.history.forward(); }
       setTimeout("preventBack()", 0);
       window.onunload = function () { null };
-  </script>
+  </script> {% endcomment %}
   </head>
   <body id="top">
 
@@ -173,7 +173,13 @@
     </footer>
   
   </div>
-
+  <script type="text/javascript">
+    // This will refresh the page and prevent going back to the cached page
+    if (performance.navigation.type === 2) {
+        // If the page is loaded from back or forward navigation
+        window.location.reload(true);
+    }
+</script>
     <!-- SCRIPTS -->
     <script src={% static "js/jquery.min.js" %}></script>
     <script src={% static "js/bootstrap.bundle.min.js" %}></script>
