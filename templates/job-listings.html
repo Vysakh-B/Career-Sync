@@ -180,6 +180,12 @@
         window.location.reload(true);
     }
 </script>
+
+<script type="text/javascript">
+  function preventBack() { window.history.forward(); }
+  setTimeout("preventBack()", 0);
+  window.onunload = function () { null };
+</script>
     <!-- SCRIPTS -->
     <script src={% static "js/jquery.min.js" %}></script>
     <script src={% static "js/bootstrap.bundle.min.js" %}></script>
