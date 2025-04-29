@@ -132,8 +132,97 @@
     </div>
 </div>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("send_button").addEventListener("click", sendMessage);
+
+  {% comment %} document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
+      let sendButton = document.getElementById("send_button");
+      let inputField = document.getElementById("user-input");
+      let chatBox = document.getElementById("chat-box");
+      let sessionId = "{{ session.id }}";  // Use first session if available
+  
+      if (!sendButton || !inputField || !chatBox) {
+          console.error("Required elements not found!");
+          return;
+      }
+  
+      sendButton.addEventListener("click", sendMessage);
+  
+      inputField.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+              sendMessage(e);
+          }
+      });
+  
+      document.querySelector(".btm form").addEventListener("submit", sendMessage);
+  
+      function getCSRFToken() {
+          return document.cookie.split("; ")
+              .find(row => row.startsWith("csrftoken="))
+              ?.split("=")[1];
+      }
+  
+      function loadChatMessages() {
+          fetch(`/get_messages/${sessionId}/`)
+              .then(response => response.json())
+              .then(data => {
+                  chatBox.innerHTML = "";  // Clear chat box
+                  data.messages.forEach(msg => {
+                      let msgDiv = document.createElement("div");
+                      msgDiv.className = msg.sender === "user" ? "msg" : "reply";
+                      msgDiv.innerText = msg.message;
+                      chatBox.appendChild(msgDiv);
+                  });
+                  chatBox.scrollTop = chatBox.scrollHeight;
+              });
+      }
+  
+      function sendMessage(event) {
+          event.preventDefault();
+  
+          let message = inputField.value.trim();
+          if (message === "") return;
+  
+          fetch("/send_message/", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+                  "X-CSRFToken": getCSRFToken()
+              },
+              body: JSON.stringify({
+                  session_id: sessionId,
+                  message: message
+              })
+          })
+          .then(response => response.json())
+          .then(data => {
+              let userMsg = document.createElement("div");
+              userMsg.className = "msg";
+              userMsg.innerText = message;
+              chatBox.appendChild(userMsg);
+  
+              setTimeout(() => {
+                  let botReply = document.createElement("div");
+                  botReply.className = "reply";
+                  botReply.innerText = data.bot_reply;
+                  chatBox.appendChild(botReply);
+                  chatBox.scrollTop = chatBox.scrollHeight;
+              }, 1000);
+  
+              inputField.value = "";
+          });
+      }
+  
+      loadChatMessages();
+  });
+  
+}); {% endcomment %}
+
+
+{% comment %} ======================================================================================================================== {% endcomment %}
+
+
+ //document.addEventListener("DOMContentLoaded", function () {
+  //document.getElementById("send_button").addEventListener("click", sendMessage);
   document.addEventListener("DOMContentLoaded", function() {
     let sendButton = document.getElementById("send_button");
     if (sendButton) {
@@ -141,6 +230,13 @@
     } else {
         console.error("Send button not found!");
     }
+    let inputField = document.getElementById("user-input");
+    inputField.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+    sendMessage(e);
+    }
+    });
+
 });
 
 
@@ -211,93 +307,10 @@
       loadChatMessages();  // Load previous messages on page load
   
       document.querySelector(".btm form").addEventListener("submit", sendMessage);
-  });
+  //}); 
 
-{% comment %} ---------------- {% endcomment %}
-//   document.addEventListener("DOMContentLoaded", function () {
-//   const inputField = document.getElementById("user-input");
-//   const sendButton = document.getElementById("send_button");
-//   const chatBox = document.getElementById("chat-box");
-//   const sessionId = "{{ session.id }}";
 
-//   // Get CSRF token from cookies
-//   function getCSRFToken() {
-//     return document.cookie.split("; ")
-//       .find(row => row.startsWith("csrftoken="))
-//       ?.split("=")[1];
-//   }
-
-//   // Load previous messages
-//   function loadChatMessages() {
-//     fetch(`/get_messages/${sessionId}/`)
-//       .then(response => response.json())
-//       .then(data => {
-//         chatBox.innerHTML = "";
-//         data.messages.forEach(msg => {
-//           const msgDiv = document.createElement("div");
-//           msgDiv.className = msg.sender === "user" ? "msg" : "reply";
-//           msgDiv.innerText = msg.message;
-//           chatBox.appendChild(msgDiv);
-//         });
-//         chatBox.scrollTop = chatBox.scrollHeight;
-//       });
-//   }
-
-//   // Send message
-//   function sendMessage(event) {
-//     event.preventDefault();
-//     const message = inputField.value.trim();
-//     if (message === "") return;
-
-//     const chatData = {
-//       session_id: sessionId,
-//       message: message
-//     };
-
-//     fetch("/send_message/", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//         "X-CSRFToken": getCSRFToken()
-//       },
-//       body: JSON.stringify(chatData)
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//       const userMsg = document.createElement("div");
-//       userMsg.className = "msg";
-//       userMsg.innerText = message;
-//       chatBox.appendChild(userMsg);
-
-//       setTimeout(() => {
-//         const botReply = document.createElement("div");
-//         botReply.className = "reply";
-//         botReply.innerText = data.bot_reply;
-//         chatBox.appendChild(botReply);
-//         chatBox.scrollTop = chatBox.scrollHeight;
-//       }, 1000);
-//     });
-
-//     inputField.value = "";
-//   }
-
-//   // Attach event listeners
-//   inputField.addEventListener("keydown", (e) => {
-//     if (e.key === "Enter") {
-//       sendMessage(e);
-//     }
-//   });
-
-//   if (sendButton) {
-//     sendButton.addEventListener("click", sendMessage);
-//   } else {
-//     console.error("Send button not found!");
-//   }
-
-//   document.querySelector(".btm form").addEventListener("submit", sendMessage);
-
-//   loadChatMessages(); // Load chat on page load
-// });
+{% comment %} ======================================================================================================================== {% endcomment %}
 
 
   
