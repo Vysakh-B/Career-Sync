@@ -184,7 +184,7 @@ def send_message(request):
                 context_prompt = (
                 f"You are a job assistant helping a user prepare for an interview.\n"
                 f"The user is currently applying to {company} for the position of {position}.\n"
-                f"Only answer in the context of this company and job role. Be specific and do not mention other companies.\n"
+                f"Only answer in the context of this company and job role. Be specific and do not mention other companies,reply in short.\n"
                 f"User: {message}"
                 )
                 gemini_model = genai.GenerativeModel("gemini-1.5-flash")  # Use a different variable name

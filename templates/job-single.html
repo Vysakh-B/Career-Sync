@@ -115,6 +115,7 @@
               <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-align-left mr-3"></span>Job Description</h3>
               {% comment %} <p>{{ data.description}}</p> {% endcomment %}
               <p>
+              {% if job_description %}
                 <ul>
                   {% for line in job_description %}
                     {% if line.strip %}  {# Ignore empty lines #}
@@ -122,11 +123,15 @@
                     {% endif %}
                   {% endfor %}
                 </ul>
+                {% else %}
+                <div class="bg-success">Description is not available now</div>
+                {% endif %}
                 
             </p>
               {% comment %} <p>Velit unde aliquam et voluptas reiciendis non sapiente labore, deleniti asperiores blanditiis nihil quia officiis dolor vero iste dolore vel molestiae saepe. Id nisi, consequuntur sunt impedit quidem, vitae mollitia!</p> {% endcomment %}
             </div>
             <div class="mb-5">
+              {% if qualification %}
               <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-rocket mr-3"></span>Qualifications</h3>
               <ul class="list-unstyled m-0 p-0">
                 {% for i in qualification %}
@@ -137,9 +142,11 @@
                 <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit</span></li>
                 <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Deleniti asperiores blanditiis nihil quia officiis dolor</span></li> {% endcomment %}
               </ul>
+              {% endif %}
             </div> 
 
             <div class="mb-5">
+              {% if responsibilities %}
               <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-book mr-3"></span>Responsibilities</h3>
               <ul class="list-unstyled m-0 p-0">
                 {% for j in responsibilities %}
@@ -150,6 +157,7 @@
                 <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit</span></li>
                 <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Deleniti asperiores blanditiis nihil quia officiis dolor</span></li> {% endcomment %}
               </ul>
+              {% endif %}
             </div> 
 
             {% comment %} <div class="mb-5">
@@ -244,13 +252,14 @@
               <h3 class="text-primary  mt-3 h5 pl-3 mb-3 ">Job Summary</h3>
               <ul class="list-unstyled pl-3 mb-0">
                 <li class="mb-2"><strong class="text-black">Published on:</strong> {{ data.job_posted }}</li>
-                <li class="mb-2"><strong class="text-black">Vacancy:</strong> 20</li>
+                {% comment %} <li class="mb-2"><strong class="text-black">Vacancy:</strong> 20</li> {% endcomment %}
                 <li class="mb-2"><strong class="text-black">Employment Status:</strong> Full-time</li>
                 {% comment %} <li class="mb-2"><strong class="text-black">Experience:</strong>{{ data.experience_required }}</li> {% endcomment %}
                 <li class="mb-2"><strong class="text-black">Job Location:</strong> {{ data.location }}</li>
-                <li class="mb-2"><strong class="text-black">Salary:</strong> {{ data.salary }}</li>
+                {% comment %} <li class="mb-2"><strong class="text-black">Salary:</strong> {{ data.salary }}</li> {% endcomment %}
+                <li class="mb-2"><strong class="text-black">Salary:</strong> Not Available</li>
                 {% comment %} <li class="mb-2"><strong class="text-black">Gender:</strong> Any</li> {% endcomment %}
-                <li class="mb-2"><strong class="text-black">Application Deadline:</strong> April 28, 2019</li>
+                {% comment %} <li class="mb-2"><strong class="text-black">Application Deadline:</strong> April 28, 2019</li> {% endcomment %}
               </ul>
             </div>
 

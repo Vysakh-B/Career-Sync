@@ -49,7 +49,10 @@ def fetch_jobs_for_user(user):
         if not reg.interested_fields:
             return True  # No interest fields, but not an error
 
-        job_query = " OR ".join(reg.interested_fields.split(','))
+        # job_query = " OR ".join(reg.interested_fields.split(','))
+        interests = [field.strip() + " in India" for field in reg.interested_fields.split(',')]
+        job_query = " OR ".join(interests)
+
         delays = "1 day ago"
 
         url = "https://jsearch.p.rapidapi.com/search"
@@ -61,7 +64,8 @@ def fetch_jobs_for_user(user):
             "query": job_query,
             "page": 1,
             "num_pages": 1,
-            "job_posted_human_readable": delays
+            "job_posted_human_readable": delays,
+            "job_country": "India"  # Filter by location
         }
 
         response = requests.get(url, headers=headers, params=params, timeout=5)
@@ -173,6 +177,10 @@ def signup(request):
 
         if len(password) < 8:
             err = "Password must be at least 8 characters long."
+            ch = True
+            return render(request, 'signup.html', {'data': err, 'chk': ch})
+        if not re.search(r'[^A-Za-z0-9]', password):
+            err = "Password contain at least 1 special character."
             ch = True
             return render(request, 'signup.html', {'data': err, 'chk': ch})
 
@@ -333,17 +341,28 @@ def reset_password_view(request, uidb64, token):
         if request.method == 'POST':
             new_password = request.POST.get('password')
             confirm_password = request.POST.get('confirmPassword')
+            # Inside your view
             if new_password == confirm_password:
-                user.set_password(new_password)
-                user.save()
-                flg = True
-                errormsg = 'Your password has been reset. You can now log in.'
-                return redirect('signin')
+                # Check password length
+                if len(new_password) < 8:
+                    flg = True
+                    errormsg = 'Password must be at least 8 characters long.'
+                # Check for at least one special character
+                elif not re.search(r'[^A-Za-z0-9]', new_password):
+                    flg = True
+                    errormsg = 'Password must contain at least one special character.'
+                else:
+                    user.set_password(new_password)
+                    user.save()
+                    flg = True
+                    errormsg = 'Your password has been reset. You can now log in.'
+                    return redirect('signin')
             else:
                 flg = True
                 errormsg = 'Passwords do not match.'
-                # messages.error(request, 'Passwords do not match.')
-
+                return render(request, 'reset_password.html', {'validlink': True,'flg':flg,'err':errormsg})
+        else:
+            return render(request, 'reset_password.html', {'validlink': False,'flg':flg,'err':errormsg})
         return render(request, 'reset_password.html', {'validlink': True,'flg':flg,'err':errormsg})
     else:
         return render(request, 'reset_password.html', {'validlink': False,'flg':flg,'err':errormsg})
