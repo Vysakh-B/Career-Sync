@@ -57,7 +57,7 @@ def fetch_jobs_for_user(user):
 
         url = "https://jsearch.p.rapidapi.com/search"
         headers = {
-            "X-RapidAPI-Key": "97a33a383bmsh833011f8404780cp103a9ejsn86557266b941",
+            "X-RapidAPI-Key": "API_KEY",
             "X-RapidAPI-Host": "jsearch.p.rapidapi.com"
         }
         params = {
