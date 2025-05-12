@@ -14,7 +14,7 @@ from chatbot.nltk_utils import tokenize,bag_of_words
 # Load the trained data
 MODEL_PATH = r"C:\Users\HP\Desktop\S4\Project\JobInterview\chatbot\data.pth"
 data = torch.load(MODEL_PATH, map_location=torch.device("cpu"))
-genai.configure(api_key="AIzaSyAfYd_rzyNuxWhrocGltVZlmJK-0_UQLs8")
+genai.configure(api_key="API_KEY")
 # Extract saved data
 input_size = data["input_size"]
 hidden_size = data["hidden_size"]
